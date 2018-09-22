@@ -1,0 +1,22 @@
+{
+  "name": "b-chan",
+  "version": "1.0.0",
+  "description": "チームB",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BitcoinHackathon/b-chan.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BitcoinHackathon/b-chan/issues"
+  },
+  "homepage": "https://github.com/BitcoinHackathon/b-chan#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
