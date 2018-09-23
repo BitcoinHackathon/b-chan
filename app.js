@@ -52,7 +52,8 @@ function getYouTube(newTxid) {
         if (messages.length > 1) {
             messages.forEach(message => {
                 console.log('コール', message, message.snippet.displayMessage);
-                const userAddress = message.authorDetails.channelId;
+                const userAddress = message.authorDetails.channelId; // FIXME: replase bitcoin address
+                // begin transaction.
                 unlockP2SHtx(newTxid, quizeData.bounty, userAddress, message.snippet.displayMessage, quizeData.portKey)
             });
         } 
