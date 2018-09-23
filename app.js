@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const createP2SHtx = require('./lib/lock_p2sh').createP2SHtx;
+const youTube = require("./youtubeLiveComment");
 
 // DataStore
 let quizeData = {}; 
@@ -44,6 +45,7 @@ app.post('/quizzes/create', (req, res) => {
 
 app.listen(3000, () => console.log('access http://localhost:3000'))
 
+youTube().then(result => console.log('取れた', result));
 
 function getYouTube() {
     let messages = ["答えテスト", "こた"]; // fukazawaさんのコールに差し替える

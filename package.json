@@ -25,6 +25,7 @@
     "google-auth-library": "^2.0.0",
     "googleapis": "^33.0.0",
     "oauth2client": "^1.0.0",
+    "util": "^0.11.0",
     "youtube-live-chat": "^1.0.1"
   }
 }
