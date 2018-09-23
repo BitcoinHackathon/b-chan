@@ -4,7 +4,7 @@ const BITBOX = new BITBOXCli({
   restURL: 'https://trest.bitcoin.com/v1/'
 })
 
-let inputString = Buffer.from("りんご", 'ascii');
+let inputString = Buffer.from("りんご");
 
 console.log(inputString);
 
@@ -34,8 +34,8 @@ let cashAddress = BITBOX.HDNode.toCashAddress(node);
 let transactionBuilder = new BITBOX.TransactionBuilder('testnet');
 
 // set original amount, txid and vout
-let originalAmount = 82447;
-let txid = 'f56c8b2d49ac78d80191b915610d34a6e0ef9e4ac939e2ca7d6b50c96b6567dc';
+let originalAmount = 87613;
+let txid = 'c5b31ca1655d79a2eb739ff181215bd8280531302b5560cb1cbff0febad4e73e';
 let vout = 0;
 
 // add input
@@ -48,11 +48,32 @@ let sendAmount = originalAmount - fee;
 // add output
 transactionBuilder.addOutput(cashAddress, sendAmount);
 
-let script = [
+
+// expire 1537628717 2018-09-23 AM 0:05
+let script = BITBOX.Script.encode([
+    // answer sigA pubkeyA
+
+    // 時間検証
+    Buffer.from('1537628717', 'ascii'),
+    BITBOX.Script.opcodes.OP_CHECKLOCKTIMEVERIFY,
+    BITBOX.Script.opcodes.OP_DROP,
+    BITBOX.Script.opcodes.OP_DUP,
     BITBOX.Script.opcodes.OP_HASH160,
-    Buffer.from(stringHash),
-    BITBOX.Script.opcodes.OP_EQUAL
-];
+    BITBOX.Script.opcodes.OP_PUBKEYHASH,
+    BITBOX.Script.opcodes.OP_EQUALVERIFY,
+    BITBOX.Script.opcodes.OP_CHECKSIGVERIFY,
+
+    // sigA pubkeyA OP_HASH160 を消す
+    BITBOX.Script.opcodes.OP_DROP,
+    BITBOX.Script.opcodes.OP_DROP,
+
+    // 一番下にanswerがあるはず
+    // ここからクイズの検証をする
+    BITBOX.Script.opcodes.OP_HASH160,
+    Buffer.from(stringHash, 'ascii'),
+    BITBOX.Script.opcodes.OP_EQUAL,
+]);
+
 
 // encode locking script
 let encodedScript = BITBOX.Script.encode(script);
@@ -74,8 +95,9 @@ let hostSig = keyPair.sign(sigHash).toScriptSignature(hashType)
 
 // create unlocking script
 let script2 = [
-  Buffer.from(inputString),
-  encodedScript.length
+    hostSig,
+    Buffer.from(inputString),
+    encodedScript.length,
 ];
 
 // concat scripts together

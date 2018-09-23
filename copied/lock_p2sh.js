@@ -38,21 +38,42 @@ console.log(legacyAddress);
 let transactionBuilder = new BITBOX.TransactionBuilder();
 
 // set original amount, txid and vout
-let originalAmount = 82697;
-let txid = '16d1490a714f6ea8835342ba2a8a1c28a55cadc5c960cd6abcb5ee4e5bb6355e';
+let originalAmount = 88131;
+let txid = 'b1dfb6d54bd0f5fd5e5eb420551816c4c39a0066a73f646c18a0e76b223a8ee8';
 let vout = 0;
 
 // add input
 transactionBuilder.addInput(txid, vout);
 
 // set fee and send amount
-let fee = 250;
+let fee = 1000;
 let sendAmount = originalAmount - fee;
 
+// expire 1537628717 2018-09-23 AM 0:05
 let script = BITBOX.Script.encode([
-  BITBOX.Script.opcodes.OP_HASH160,
-  Buffer.from(stringHash),
-  BITBOX.Script.opcodes.OP_EQUAL
+    // answer sigA pubkeyA
+
+    // 時間検証
+    // Buffer.from('1537628717', 'ascii'),
+    // 未来↓
+    Buffer.from('1538660026', 'ascii'),
+    BITBOX.Script.opcodes.OP_CHECKLOCKTIMEVERIFY,
+    BITBOX.Script.opcodes.OP_DROP,
+    BITBOX.Script.opcodes.OP_DUP,
+    BITBOX.Script.opcodes.OP_HASH160,
+    BITBOX.Script.opcodes.OP_PUBKEYHASH,
+    BITBOX.Script.opcodes.OP_EQUALVERIFY,
+    BITBOX.Script.opcodes.OP_CHECKSIGVERIFY,
+
+    // sigA pubkeyA OP_HASH160 を消す
+    BITBOX.Script.opcodes.OP_DROP,
+    BITBOX.Script.opcodes.OP_DROP,
+
+    // 一番下にanswerがあるはず
+    // ここからクイズの検証をする
+    BITBOX.Script.opcodes.OP_HASH160,
+    Buffer.from(stringHash, 'ascii'),
+    BITBOX.Script.opcodes.OP_EQUAL,
 ]);
 
 console.log(script)
