@@ -33,7 +33,7 @@ app.post('/quizzes/create', (req, res) => {
     };
 
     // create bounty
-    createP2SHtx(sourceTxid, quizeData.bounty, quizeData.portKey).then(newTxid => {
+    createP2SHtx(sourceTxid, parseInt(quizeData.bounty), quizeData.portKey).then(newTxid => {
         console.log(newTxid);
         // begin to wait answer.
         setInterval(getYouTube, 1000);
