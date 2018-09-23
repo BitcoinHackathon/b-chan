@@ -1,10 +1,15 @@
 const express = require('express');
+const bodyParser = require("body-parser");
 const app = express();
 
 // app.use(reload(__dirname + '/app.js'))
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.set("view engine", "ejs");
 
+let quizeData = {}; 
 
 app.get('/', function (req, res) {
     const response = {
@@ -14,6 +19,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/quizzes/create', function (req, res) {
+    quizeData = req.body;
     const response = {
         "message": "登録が成功しました。",
     };
