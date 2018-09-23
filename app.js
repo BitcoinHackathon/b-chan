@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const createP2SHtx = require('./lib/lock_p2sh').createP2SHtx;
+const unlockP2SHtx = require('./lib/unlock_p2sh').unlockP2SHtx;
 const youTube = require("./youtubeLiveComment");
 
 // DataStore
@@ -37,7 +38,7 @@ app.post('/quizzes/create', (req, res) => {
     createP2SHtx(sourceTxid, quizeData.bounty, quizeData.portKey).then(newTxid => {
         console.log('ニューID', newTxid);
         // begin to wait answer.
-        setInterval(getYouTube, 1000);
+        setInterval(() => getYouTube(newTxid), 1000);
     });
 
     res.render("./index.ejs", response);
@@ -45,13 +46,14 @@ app.post('/quizzes/create', (req, res) => {
 
 app.listen(3000, () => console.log('access http://localhost:3000'))
 
-function getYouTube() {
+function getYouTube(newTxid) {
     youTube().then(messages => {
         console.log('メッセージ', messages);
         if (messages.length > 1) {
             messages.forEach(message => {
                 console.log('コール', message, message.snippet.displayMessage);
-                // 2つ目のトランザクション @param newTxid, user_address, user_answer, master_amount
+                const userAddress = message.authorDetails.channelId;
+                unlockP2SHtx(newTxid, quizeData.bounty, userAddress, message.snippet.displayMessage, quizeData.portKey)
             });
         } 
     });
