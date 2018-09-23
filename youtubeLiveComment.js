@@ -30,7 +30,6 @@ fs.readFile('client_secret.json', function processClientSecrets(err, content) {
     return;
   }
   var liveChatId =  authorize(JSON.parse(content), getLiveChatId);
-  console.log(liveChatId);
   
   authorize(JSON.parse(content), getLiveChatMessage);
 });
@@ -68,8 +67,8 @@ function getLiveChatId(auth)
   service.liveBroadcasts.list({
     auth: auth,
     part: 'snippet',
-    id: "o3oWoxbURqk",//TODO videoID
-    //https://www.youtube.com/watch?v=o3oWoxbURqk
+    id: "l816lGcEVQo",//TODO videoID
+    //https://www.youtube.com/watch?v=l816lGcEVQo
 
   }, function(err, response) {
     if (err) {
@@ -82,7 +81,7 @@ function getLiveChatId(auth)
       console.log('No channel found.');
     } else {
       console.log('This channel\'s ID is %s. Its title is \'%s\', and ' +
-                  'it has %s views.',
+                  'liveChatId %s views.',
                   videos[0].id,
                   videos[0].snippet.title,
                   videos[0].snippet.liveChatId);
