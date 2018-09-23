@@ -35,7 +35,7 @@ app.post('/quizzes/create', (req, res) => {
 
     // create bounty
     createP2SHtx(sourceTxid, quizeData.bounty, quizeData.portKey).then(newTxid => {
-        console.log(newTxid);
+        console.log('ニューID', newTxid);
         // begin to wait answer.
         setInterval(getYouTube, 1000);
     });
@@ -45,12 +45,14 @@ app.post('/quizzes/create', (req, res) => {
 
 app.listen(3000, () => console.log('access http://localhost:3000'))
 
-youTube().then(result => console.log('取れた', result));
-
 function getYouTube() {
-    let messages = ["答えテスト", "こた"]; // fukazawaさんのコールに差し替える
-    console.log('メッセージ', messages);
-    if (messages.length > 1) {
-        messages.forEach(message => {}); // 2つ目のトランザクション @param newTxid, user_address, user_answer, master_amount
-    } 
+    youTube().then(messages => {
+        console.log('メッセージ', messages);
+        if (messages.length > 1) {
+            messages.forEach(message => {
+                console.log('コール', message, message.snippet.displayMessage);
+                // 2つ目のトランザクション @param newTxid, user_address, user_answer, master_amount
+            });
+        } 
+    });
  }

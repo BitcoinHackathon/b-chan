@@ -1,16 +1,13 @@
-var fs = require('fs');
+const fs = require('fs');
 const { promisify } = require('util');
 const readFIle = promisify(fs.readFile);
-var {google} = require('googleapis');
-var OAuth2 = google.auth.OAuth2;
+const {google} = require('googleapis');
+const OAuth2 = google.auth.OAuth2;
 
-var SCOPES = ['https://www.googleapis.com/auth/youtube.readonly'];
-var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
-    process.env.USERPROFILE) + '/.credentials/';
-var TOKEN_PATH = TOKEN_DIR + 'youtube-nodejs-quickstart.json';
+const SCOPES = ['https://www.googleapis.com/auth/youtube.readonly'];
+const TOKEN_PATH = './youtube-nodejs-quickstart.json';
 
-console.log(TOKEN_PATH);
-module.exports = async function callw() {
+module.exports = async function call() {
   const credentials = await JSON.parse(await readFIle('client_secret.json'));
   const token = await JSON.parse(await readFIle(TOKEN_PATH));
 
@@ -23,16 +20,6 @@ module.exports = async function callw() {
   oauth2Client.credentials = token;
   return await getLiveChatMessage(oauth2Client);
 }
-
-fs.readFile('client_secret.json', function processClientSecrets(err, content) {
-  if (err) {
-    console.log('Error loading client secret file: ' + err);
-    return;
-  }
-  var liveChatId =  authorize(JSON.parse(content), getLiveChatId);
-  
-  authorize(JSON.parse(content), getLiveChatMessage);
-});
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
