@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        <div><%- message %></div>
+
+        <h1>B-Chan</h1>
+        <form method="POST" action="/quizzes/create">
+            <div>
+                <label>amount</label>
+                <input name="amount" type="number">
+            </div>
+
+            <div>
+                <label>答え</label>
+                <input name="answer" type="number">
+            </div>
+            <input type="submit">
+        </form>
+    </body>
+</html>
